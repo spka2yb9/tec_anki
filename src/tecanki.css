@@ -1,0 +1,814 @@
+/* TecAnki: 語彙学習のための画面スタイル。既存の配色トークン(index.css)を継承する。 */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- 共通パネル ---------- */
+
+.panel {
+  margin-top: 1.6rem;
+  padding: 1.35rem 1.45rem 1.5rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.panel h2 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.panel-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.4rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.panel-sub {
+  color: var(--ink-500);
+  font-size: 0.82rem;
+}
+
+.panel-note {
+  margin: 0.8rem 0 0;
+  color: var(--ink-500);
+  font-size: 0.82rem;
+}
+
+.panel-muted {
+  background: var(--canvas-warm);
+}
+
+.panel-danger {
+  border-color: #e9c7c1;
+  background: #fffafa;
+}
+
+/* ---------- レベルバッジ・バー ---------- */
+
+.level-badge {
+  display: inline-flex;
+  min-width: 2.35rem;
+  height: 1.55rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.5rem;
+  border-radius: 999px;
+  font-family: var(--english);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+}
+
+.level-a1 { color: #1f6b45; background: #e2f4e8; }
+.level-a2 { color: #146b67; background: #dcf1ee; }
+.level-b1 { color: #1d5e86; background: #dfeefa; }
+.level-b2 { color: #5b4a8a; background: #ece7fa; }
+
+.level-bars {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.level-row {
+  display: grid;
+  grid-template-columns: 3rem 1fr auto;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.level-track {
+  position: relative;
+  height: 12px;
+  overflow: hidden;
+  background: #edf1f2;
+  border-radius: 999px;
+}
+
+.level-track-started,
+.level-track-learned {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 999px;
+}
+
+.level-track-started { background: #bcd9dd; }
+.level-track-learned { background: var(--teal); }
+
+.level-num {
+  color: var(--ink-650);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* ---------- 学習予測・アクティビティ ---------- */
+
+.forecast {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.4rem;
+  align-items: end;
+  height: 150px;
+  padding-top: 0.5rem;
+}
+
+.forecast-col {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  align-items: end;
+  justify-items: center;
+  gap: 0.25rem;
+  height: 100%;
+}
+
+.forecast-count {
+  color: var(--ink-650);
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.forecast-bar {
+  width: 70%;
+  min-height: 4px;
+  background: linear-gradient(180deg, var(--teal), #3aa79d);
+  border-radius: 6px 6px 3px 3px;
+}
+
+.forecast-label {
+  color: var(--ink-500);
+  font-size: 0.68rem;
+  white-space: nowrap;
+}
+
+.activity-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 120px;
+  padding-top: 0.4rem;
+}
+
+.activity-slot {
+  display: flex;
+  flex: 1;
+  align-items: flex-end;
+  height: 100%;
+}
+
+.activity-bar {
+  width: 100%;
+  min-height: 2px;
+  background: var(--blue);
+  border-radius: 3px 3px 0 0;
+}
+
+.chart-axis {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5rem 0 0;
+  color: var(--ink-500);
+  font-size: 0.7rem;
+}
+
+.chart-axis-max { color: var(--ink-650); }
+
+/* ---------- 共通 ---------- */
+
+.home-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 0.6rem;
+}
+
+.home-done {
+  margin: 0;
+  color: var(--green);
+  font-weight: 700;
+}
+
+/* ---------- 学習画面 ---------- */
+
+.study-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.study-progress-text {
+  margin: 0;
+  color: var(--ink-500);
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.study-progress {
+  height: 8px;
+  margin: 0.7rem 0 1.6rem;
+  overflow: hidden;
+  background: #e6ecee;
+  border-radius: 999px;
+}
+
+.study-progress > span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--teal), #45b3a7);
+  border-radius: inherit;
+  transition: width 220ms ease;
+}
+
+.study-card {
+  width: min(100%, 760px);
+  margin: 0 auto;
+  padding: clamp(1.4rem, 4vw, 2.4rem);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  touch-action: pan-y;
+}
+
+.study-front {
+  display: grid;
+  justify-items: center;
+  gap: 0.9rem;
+  padding: clamp(0.5rem, 3vw, 1.8rem) 0;
+  text-align: center;
+}
+
+.study-word {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin: 0;
+  font-family: var(--english);
+  font-size: clamp(2rem, 6vw, 3.1rem);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.study-front-hint {
+  margin: 0;
+  color: var(--ink-500);
+  font-size: 0.88rem;
+}
+
+.study-reveal {
+  margin-top: 0.6rem;
+}
+
+.study-key {
+  margin-left: 0.5rem;
+  padding: 0.1rem 0.4rem;
+  background: rgb(255 255 255 / 18%);
+  border-radius: 6px;
+  font-family: var(--english);
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.study-back {
+  display: grid;
+  gap: 0.95rem;
+  margin-top: 0.4rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--line);
+}
+
+.study-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+}
+
+.study-ipa {
+  font-family: var(--english);
+  color: var(--ink-650);
+  font-size: 1rem;
+}
+
+.study-pos {
+  padding: 0.1rem 0.5rem;
+  color: var(--ink-650);
+  background: var(--canvas);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 0.75rem;
+}
+
+.study-meaning {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.study-example {
+  padding: 0.9rem 1rem;
+  background: var(--canvas-warm);
+  border-radius: var(--radius-sm);
+}
+
+.study-example .example-en {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-family: var(--english);
+  font-size: 1.05rem;
+}
+
+.study-example .example-ja {
+  margin: 0.45rem 0 0;
+  color: var(--ink-650);
+  font-size: 0.9rem;
+}
+
+.study-card .vocab-memory-image img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* 4択 */
+
+.rating-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin-top: 0.4rem;
+}
+
+.rating-btn {
+  position: relative;
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.7rem 0.5rem 0.6rem;
+  color: #fff;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: transform 120ms ease, filter 120ms ease;
+}
+
+.rating-btn:hover:not(:disabled) {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+
+.rating-btn:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+.rating-again { background: var(--coral); }
+.rating-hard { background: #b7791f; }
+.rating-good { background: #1f7a52; }
+.rating-easy { background: var(--blue); }
+
+.rating-label { font-size: 0.95rem; }
+
+.rating-next {
+  font-family: var(--english);
+  font-size: 0.72rem;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+.rating-key {
+  position: absolute;
+  top: 5px;
+  right: 7px;
+  font-family: var(--english);
+  font-size: 0.62rem;
+  opacity: 0.65;
+}
+
+.study-keybar {
+  margin-top: 1.1rem;
+  color: var(--ink-500);
+  font-size: 0.76rem;
+  text-align: center;
+}
+
+.study-keybar p { margin: 0; }
+
+/* 学習ステップ待ち */
+
+.study-wait {
+  display: grid;
+  width: min(100%, 560px);
+  margin: 1rem auto;
+  padding: 2rem 1.5rem;
+  justify-items: center;
+  gap: 0.6rem;
+  text-align: center;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.study-wait-label { margin: 0; color: var(--ink-500); font-size: 0.85rem; }
+.study-wait-time {
+  margin: 0;
+  font-family: var(--english);
+  font-size: 3rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.study-wait-note { margin: 0 0 0.6rem; color: var(--ink-650); font-size: 0.85rem; }
+
+/* 完了 */
+
+.study-complete {
+  display: grid;
+  max-width: 620px;
+  margin: 3rem auto;
+  padding: 2.4rem;
+  justify-items: center;
+  gap: 0.6rem;
+  text-align: center;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.study-complete h2 { margin: 0; }
+.study-complete p { margin: 0; color: var(--ink-650); }
+.study-complete-mark {
+  display: grid;
+  width: 3.2rem;
+  height: 3.2rem;
+  place-items: center;
+  color: #fff;
+  background: var(--green);
+  border-radius: 50%;
+  font-size: 1.7rem;
+  font-weight: 800;
+}
+
+/* ---------- 単語一覧 ---------- */
+
+.words-controls {
+  display: grid;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.words-search input {
+  width: 100%;
+  min-height: 46px;
+  padding: 0.65rem 0.9rem;
+  background: var(--paper);
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  font-size: 1rem;
+}
+
+.words-search input:focus {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.chip {
+  padding: 0.35rem 0.8rem;
+  color: var(--ink-650);
+  background: var(--paper);
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.chip:hover { background: var(--blue-soft); }
+
+.chip.active {
+  color: #fff;
+  background: var(--navy);
+  border-color: var(--navy);
+}
+
+.words-count {
+  margin: 0 0 0.6rem;
+  color: var(--ink-500);
+  font-size: 0.8rem;
+}
+
+.word-list {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--paper);
+}
+
+.word-row + .word-row {
+  border-top: 1px solid var(--line);
+}
+
+.word-row-main {
+  display: grid;
+  grid-template-columns: 2.8rem minmax(7rem, auto) auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.7rem;
+  width: 100%;
+  padding: 0.65rem 0.9rem;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+}
+
+.word-row-main:hover { background: var(--canvas-warm); }
+
+.word-row-word {
+  font-family: var(--english);
+  font-size: 1.02rem;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.word-row-pos {
+  color: var(--ink-500);
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+
+.word-row-meaning {
+  overflow: hidden;
+  color: var(--ink-650);
+  font-size: 0.82rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.word-row-state {
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  white-space: nowrap;
+}
+
+.state-new { color: var(--ink-500); background: var(--canvas); }
+.state-learning { color: #8a5a12; background: var(--gold-soft); }
+.state-review { color: var(--green); background: var(--green-soft); }
+
+.word-detail {
+  display: grid;
+  gap: 0.8rem;
+  padding: 0.9rem 1rem 1.1rem;
+  background: var(--canvas-warm);
+  border-top: 1px solid var(--line);
+}
+
+.words-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.2rem;
+}
+
+/* ---------- 統計 ---------- */
+
+.stat-cards {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.stat-card {
+  display: grid;
+  gap: 0.15rem;
+  padding: 1rem 1.1rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-label { color: var(--ink-500); font-size: 0.78rem; font-weight: 700; }
+.stat-value {
+  font-family: var(--english);
+  font-size: 1.9rem;
+  font-weight: 800;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.stat-sub { color: var(--ink-500); font-size: 0.75rem; }
+
+.stats-two {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.2rem;
+}
+
+.rating-totals {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+
+.rating-total {
+  display: grid;
+  gap: 0.1rem;
+  padding: 0.7rem 0.8rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+}
+
+.rating-total strong {
+  font-family: var(--english);
+  font-size: 1.25rem;
+}
+
+.rating-total.again { color: var(--coral-deep); background: var(--coral-soft); }
+.rating-total.hard { color: #7a5312; background: var(--gold-soft); }
+.rating-total.good { color: var(--green); background: var(--green-soft); }
+.rating-total.easy { color: var(--blue); background: var(--blue-soft); }
+
+/* ---------- 設定 ---------- */
+
+.settings-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-top: 0.9rem;
+}
+
+.settings-field {
+  display: grid;
+  gap: 0.3rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.settings-field input {
+  width: 9rem;
+  min-height: 44px;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 9px;
+  font-size: 1rem;
+}
+
+.settings-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.settings-saved { color: var(--green); font-size: 0.82rem; }
+
+.settings-info {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0.8rem 0 0;
+}
+
+.settings-info > div {
+  display: grid;
+  grid-template-columns: 9rem 1fr;
+  gap: 0.8rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.settings-info > div:last-child { border-bottom: 0; padding-bottom: 0; }
+.settings-info dt { color: var(--ink-500); font-size: 0.82rem; }
+.settings-info dd { margin: 0; font-size: 0.88rem; }
+
+/* ---------- レスポンシブ ---------- */
+
+@media (width <= 900px) {
+  .stat-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stats-two { grid-template-columns: 1fr; }
+  .word-row-main { grid-template-columns: 2.6rem minmax(0, 1fr) auto; }
+  .word-row-pos { display: none; }
+  .word-row-meaning { grid-column: 2 / -1; white-space: normal; }
+}
+
+@media (width <= 620px) {
+  .page { padding-inline: 1rem; }
+  .rating-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rating-key { display: none; }
+  .word-row-main { grid-template-columns: 2.4rem minmax(0, 1fr) auto; gap: 0.5rem; }
+  .settings-info > div { grid-template-columns: 7rem 1fr; }
+  .study-word { font-size: 2.2rem; }
+}
+
+/* ---------- 例文の単語タップ辞書 ---------- */
+
+.example-sentence { display: inline; }
+
+.example-word-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.example-word {
+  display: inline;
+  padding: 0;
+  margin: 0;
+  color: inherit;
+  background: none;
+  border: 0;
+  border-bottom: 1px dotted rgb(23 124 120 / 45%);
+  font: inherit;
+  line-height: inherit;
+  cursor: pointer;
+}
+
+.example-word:hover,
+.example-word:focus-visible {
+  color: var(--teal);
+  border-bottom-color: var(--teal);
+  outline: none;
+}
+
+.example-word-unknown {
+  border-bottom-color: transparent;
+  cursor: default;
+}
+
+.word-tooltip {
+  position: absolute;
+  z-index: 25;
+  left: 0;
+  bottom: calc(100% + 6px);
+  display: grid;
+  gap: 3px;
+  width: max-content;
+  max-width: min(18rem, 78vw);
+  padding: 0.55rem 0.7rem;
+  color: var(--ink-950);
+  background: var(--paper);
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  box-shadow: var(--shadow-md);
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  line-height: 1.45;
+  text-align: left;
+  white-space: normal;
+}
+
+.word-tooltip-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.word-tooltip-word {
+  font-family: var(--english);
+  font-weight: 700;
+}
+
+.word-tooltip-pos {
+  color: var(--ink-500);
+  font-size: 0.7rem;
+}
+
+.word-tooltip-meaning {
+  color: var(--ink-650);
+  font-size: 0.78rem;
+}

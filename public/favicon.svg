@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="TecAnki">
+  <rect width="512" height="512" rx="82" fill="#173f5f"/>
+  <rect x="102" y="110" width="308" height="292" rx="30" fill="#ffffff"/>
+  <path d="M102 140a30 30 0 0 1 30-30h248a30 30 0 0 1 30 30v29H102z" fill="#238b83"/>
+  <rect x="143" y="213" width="164" height="23" rx="11" fill="#c9d7dd"/>
+  <rect x="143" y="280" width="164" height="23" rx="11" fill="#c9d7dd"/>
+  <rect x="143" y="347" width="115" height="23" rx="11" fill="#c9d7dd"/>
+  <circle cx="356" cy="334" r="44" fill="#d99a2b"/>
+  <path d="M333 334l15 16 32-33" stroke="#ffffff" stroke-width="11" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
