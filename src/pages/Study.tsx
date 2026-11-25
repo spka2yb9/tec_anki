@@ -156,10 +156,8 @@ export function Study() {
         <div className="empty-state">
           <p className="eyebrow">今日の分は完了</p>
           <h2>出題するカードがありません</h2>
-          <p>新しい単語を増やすか、設定で1日の上限を上げてください。</p>
           <div className="home-actions">
             <Link className="btn-primary" to="/words">単語一覧を見る</Link>
-            <Link className="btn-secondary" to="/settings">設定を開く</Link>
           </div>
         </div>
       </div>
