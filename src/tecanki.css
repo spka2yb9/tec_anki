@@ -770,10 +770,11 @@
 }
 
 .word-tooltip {
-  position: absolute;
-  z-index: 25;
+  /* 位置は ExampleSentence がビューポート座標で指定するため fixed で固定する。 */
+  position: fixed;
+  z-index: 60;
+  top: 0;
   left: 0;
-  bottom: calc(100% + 6px);
   display: grid;
   gap: 3px;
   width: max-content;
