@@ -118,13 +118,20 @@
   white-space: nowrap;
 }
 
+.level-pct {
+  margin-left: 0.35rem;
+  color: var(--ink-500);
+  font-size: 0.72rem;
+}
+
 /* ---------- 学習予測・アクティビティ ---------- */
 
 .forecast {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 0.4rem;
+  grid-template-columns: repeat(14, minmax(0, 1fr));
+  gap: 0.35rem;
   align-items: end;
+  min-width: 21rem;
   height: 150px;
   padding-top: 0.5rem;
 }
@@ -173,10 +180,23 @@
 }
 
 .activity-bar {
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  min-height: 2px;
-  background: var(--blue);
+  overflow: hidden;
   border-radius: 3px 3px 0 0;
+}
+
+.activity-seg {
+  width: 100%;
+}
+
+.activity-seg-new {
+  background: var(--blue);
+}
+
+.activity-seg-review {
+  background: var(--teal);
 }
 
 .chart-axis {
@@ -662,6 +682,296 @@
 .rating-total.hard { color: #7a5312; background: var(--gold-soft); }
 .rating-total.good { color: var(--green); background: var(--green-soft); }
 .rating-total.easy { color: var(--blue); background: var(--blue-soft); }
+
+.rating-label {
+  color: inherit;
+  font-size: 0.72rem;
+  opacity: 0.85;
+}
+
+.rating-pct {
+  font-size: 0.7rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- 統計: ヒーロー・カレンダー ---------- */
+
+.stat-hero-body {
+  display: grid;
+  grid-template-columns: minmax(0, 220px) minmax(0, 1fr);
+  gap: 1.4rem;
+  align-items: center;
+}
+
+.donut-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 220px;
+  aspect-ratio: 1;
+  margin: 0 auto;
+}
+
+.donut {
+  width: 100%;
+  height: 100%;
+}
+
+.donut-track {
+  fill: none;
+  stroke: #edf1f2;
+  stroke-width: 16;
+}
+
+.donut-seg {
+  fill: none;
+  stroke-width: 16;
+  stroke-linecap: butt;
+}
+
+.donut-center {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 0.05rem;
+  text-align: center;
+}
+
+.donut-center strong {
+  font-family: var(--english);
+  font-size: 1.9rem;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.donut-center span {
+  color: var(--ink-500);
+  font-size: 0.72rem;
+}
+
+.stat-hero-side {
+  display: grid;
+  gap: 1rem;
+}
+
+.donut-legend {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.45rem 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.donut-legend-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0;
+  font-size: 0.82rem;
+}
+
+.donut-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+
+.donut-legend-label {
+  color: var(--ink-650);
+}
+
+.donut-legend-value {
+  font-family: var(--english);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.donut-legend-pct {
+  color: var(--ink-500);
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.goal-block {
+  display: grid;
+  gap: 0.45rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--line);
+}
+
+.goal-title {
+  margin: 0 0 0.1rem;
+  color: var(--ink-500);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.goal-row {
+  display: grid;
+  grid-template-columns: 2.2rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.78rem;
+}
+
+.goal-label {
+  color: var(--ink-650);
+}
+
+.goal-count {
+  color: var(--ink-500);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.goal-track {
+  height: 8px;
+  overflow: hidden;
+  background: #edf1f2;
+  border-radius: 999px;
+}
+
+.goal-fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+}
+
+.goal-new .goal-fill { background: var(--blue); }
+.goal-review .goal-fill { background: var(--teal); }
+
+.stat-trend {
+  margin-left: 0.35rem;
+  font-weight: 700;
+}
+
+.trend-up { color: var(--green); }
+.trend-down { color: var(--coral-deep); }
+
+.forecast-scroll {
+  overflow-x: auto;
+  padding-bottom: 0.1rem;
+}
+
+.forecast-overdue {
+  padding: 0.05rem 0.5rem;
+  color: var(--coral-deep);
+  background: var(--coral-soft);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.chart-legend {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  color: var(--ink-500);
+  font-size: 0.72rem;
+  list-style: none;
+}
+
+.chart-legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+}
+
+.chart-legend-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex: 0 0 auto;
+}
+
+.heatmap {
+  display: flex;
+  gap: 3px;
+  overflow-x: auto;
+  padding-bottom: 0.2rem;
+}
+
+.heatmap-week {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.heatmap-day {
+  width: 13px;
+  height: 13px;
+  border-radius: 3px;
+  flex: 0 0 auto;
+}
+
+.heat-0 { background: #edf1f2; }
+.heat-1 { background: #d7ece9; }
+.heat-2 { background: #9fd4cf; }
+.heat-3 { background: #4ba7a1; }
+.heat-4 { background: var(--teal); }
+.heat-empty { background: transparent; }
+
+.heatmap-legend {
+  margin-top: 0.7rem;
+}
+
+.rating-stack {
+  display: flex;
+  gap: 2px;
+  height: 14px;
+  margin-bottom: 0.9rem;
+  overflow: hidden;
+  background: #edf1f2;
+  border-radius: 999px;
+}
+
+.rating-seg {
+  display: block;
+  min-width: 0;
+}
+
+.rating-seg.rating-again { background: var(--coral); }
+.rating-seg.rating-hard { background: var(--gold); }
+.rating-seg.rating-good { background: var(--green); }
+.rating-seg.rating-easy { background: var(--blue); }
+
+@media (width <= 900px) {
+  .stat-hero-body {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+  }
+
+  .stat-hero-side {
+    width: 100%;
+  }
+}
+
+@media (width <= 620px) {
+  .donut-legend {
+    grid-template-columns: 1fr;
+  }
+
+  .rating-totals {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .level-num {
+    font-size: 0.74rem;
+  }
+
+  .level-pct {
+    font-size: 0.68rem;
+  }
+}
 
 /* ---------- 設定 ---------- */
 
