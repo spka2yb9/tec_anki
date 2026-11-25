@@ -40,8 +40,6 @@ export const KEYS = {
   cards: 'tecanki.cards.v1',
   /** Record<YYYY-MM-DD, DailyStat>。その日に覚えた枚数・評価の内訳。 */
   daily: 'tecanki.daily.v1',
-  /** 日次上限などの設定。 */
-  settings: 'tecanki.settings.v1',
   /** string[] 学習した日(YYYY-MM-DD)。ストリークと合計日数に使う。 */
   studyDays: 'tecanki.studyDays.v1',
 } as const
