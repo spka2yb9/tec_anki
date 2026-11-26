@@ -7,7 +7,8 @@ import {
   useState,
   type MouseEvent,
 } from 'react'
-import { lookupWord } from '../services/wordLookup'
+import type { VocabularyEntry } from '../content/types'
+import { lookupPhrase, lookupWord } from '../services/wordLookup'
 
 const TOKEN_PATTERN = /[A-Za-z]+(?:['’][A-Za-z]+)*|[^A-Za-z]+/g
 
@@ -26,11 +27,67 @@ type ActiveWord = {
   anchor: Anchor
 }
 
+/** 表示の単位。熟語は複数の語をまとめて1つのボタンにする。 */
+type Segment =
+  | { kind: 'text'; key: number; text: string }
+  | { kind: 'word'; key: number; text: string; entry: VocabularyEntry | undefined }
+
 function tokenize(sentence: string): Token[] {
   return (sentence.match(TOKEN_PATTERN) ?? [sentence]).map((text) => ({
     text,
     isWord: /^[A-Za-z]/.test(text),
   }))
+}
+
+/** 空白だけを挟んで連続する語を集める。句読点が入るとそこで区切る。 */
+function collectWords(tokens: Token[], start: number): { words: string[]; indexes: number[] } {
+  const words: string[] = []
+  const indexes: number[] = []
+  let index = start
+  while (index < tokens.length && tokens[index].isWord) {
+    words.push(tokens[index].text)
+    indexes.push(index)
+    index += 1
+
+    const gap = tokens[index]
+    if (gap && /^\s+$/.test(gap.text) && tokens[index + 1]?.isWord) {
+      index += 1
+      continue
+    }
+    break
+  }
+  return { words, indexes }
+}
+
+/** 例文を、テキストまたはタップ可能な語(熟語を含む)へ分割する。 */
+function buildSegments(tokens: Token[]): Segment[] {
+  const segments: Segment[] = []
+  let index = 0
+  while (index < tokens.length) {
+    const token = tokens[index]
+    if (!token.isWord) {
+      segments.push({ kind: 'text', key: index, text: token.text })
+      index += 1
+      continue
+    }
+
+    const { words, indexes } = collectWords(tokens, index)
+    const phrase = lookupPhrase(words)
+    if (phrase && phrase.length > 1) {
+      const endIndex = indexes[phrase.length - 1]
+      const text = tokens
+        .slice(index, endIndex + 1)
+        .map((part) => part.text)
+        .join('')
+      segments.push({ kind: 'word', key: index, text, entry: phrase.entry })
+      index = endIndex + 1
+      continue
+    }
+
+    segments.push({ kind: 'word', key: index, text: token.text, entry: lookupWord(token.text) })
+    index += 1
+  }
+  return segments
 }
 
 type ExampleSentenceProps = {
@@ -43,6 +100,7 @@ export function ExampleSentence({ sentence }: ExampleSentenceProps) {
   const rootRef = useRef<HTMLSpanElement>(null)
   const tooltipRef = useRef<HTMLSpanElement>(null)
   const tokens = useMemo(() => tokenize(sentence), [sentence])
+  const segments = useMemo(() => buildSegments(tokens), [tokens])
   const openIndex = active?.sentence === sentence ? active.index : null
 
   // タップした語の位置を基準に、画面からはみ出さない位置へツールチップを置く。
@@ -102,33 +160,34 @@ export function ExampleSentence({ sentence }: ExampleSentenceProps) {
 
   return (
     <span className="example-sentence" ref={rootRef}>
-      {tokens.map((token, index) => {
-        if (!token.isWord) return <Fragment key={index}>{token.text}</Fragment>
+      {segments.map((segment) => {
+        if (segment.kind === 'text') return <Fragment key={segment.key}>{segment.text}</Fragment>
 
-        const entry = lookupWord(token.text)
-        const open = openIndex === index
+        const open = openIndex === segment.key
         return (
-          <span key={index} className="example-word-wrap">
+          <span key={segment.key} className="example-word-wrap">
             <button
               type="button"
               className="example-word"
               lang="en"
               aria-expanded={open}
-              onClick={(event) => toggleWord(event, index, open)}
+              onClick={(event) => toggleWord(event, segment.key, open)}
             >
-              {token.text}
+              {segment.text}
             </button>
             {open && (
               <span className="word-tooltip" role="tooltip" ref={tooltipRef}>
-                {entry ? (
+                {segment.entry ? (
                   <>
                     <span className="word-tooltip-head">
                       <span className="word-tooltip-word" lang="en">
-                        {entry.word}
+                        {segment.entry.word}
                       </span>
-                      <span className="word-tooltip-pos">{entry.partOfSpeech}</span>
+                      <span className="word-tooltip-pos">{segment.entry.partOfSpeech}</span>
                     </span>
-                    <span className="word-tooltip-meaning">{entry.meaningsJa.join('、')}</span>
+                    <span className="word-tooltip-meaning">
+                      {segment.entry.meaningsJa.join('、')}
+                    </span>
                   </>
                 ) : (
                   <span className="word-tooltip-meaning">この辞書には未収録です</span>

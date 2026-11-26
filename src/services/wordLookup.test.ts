@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { lookupWord } from './wordLookup'
+import { lookupPhrase, lookupWord } from './wordLookup'
 
 describe('lookupWord', () => {
   it('見出し語をそのまま引ける', () => {
@@ -29,5 +29,27 @@ describe('lookupWord', () => {
   it('辞書にない語は undefined', () => {
     expect(lookupWord('zzzznotaword')).toBeUndefined()
     expect(lookupWord('123')).toBeUndefined()
+  })
+})
+
+describe('lookupPhrase', () => {
+  it('句動詞をそのままの形で引ける', () => {
+    expect(lookupPhrase(['give', 'up'])?.entry.word).toBe('give up')
+  })
+
+  it('先頭の語の活用形を原型に戻して引ける', () => {
+    expect(lookupPhrase(['gave', 'up'])?.entry.word).toBe('give up')
+    expect(lookupPhrase(['looking', 'after', 'the'])?.entry.word).toBe('look after')
+  })
+
+  it('最長一致を優先し、一致した語数を返す', () => {
+    const match = lookupPhrase(['get', 'rid', 'of', 'these'])
+    expect(match?.entry.word).toBe('get rid of')
+    expect(match?.length).toBe(3)
+  })
+
+  it('汎用コロケーション(表現)は熟語として扱わない', () => {
+    expect(lookupPhrase(['reads', 'a', 'book'])).toBeUndefined()
+    expect(lookupPhrase(['reads'])).toBeUndefined()
   })
 })

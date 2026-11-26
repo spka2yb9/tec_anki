@@ -15,4 +15,19 @@ describe('ExampleSentence', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Zzzqx' }))
     expect(await screen.findByRole('tooltip')).toHaveTextContent('未収録')
   })
+
+  it('熟語は繋げて1つの単語として扱う', async () => {
+    render(<ExampleSentence sentence="He decided to give up smoking." />)
+    expect(screen.queryByRole('button', { name: 'give' })).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'give up' }))
+    const tooltip = await screen.findByRole('tooltip')
+    expect(tooltip).toHaveTextContent('give up')
+    expect(tooltip).toHaveTextContent('あきらめる')
+  })
+
+  it('活用した熟語も原型の意味を出す', async () => {
+    render(<ExampleSentence sentence="She gave up her job." />)
+    fireEvent.click(screen.getByRole('button', { name: 'gave up' }))
+    expect(await screen.findByRole('tooltip')).toHaveTextContent('give up')
+  })
 })

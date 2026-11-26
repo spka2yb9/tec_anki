@@ -123,6 +123,31 @@ function normalizeToken(token: string): string {
   return token.toLowerCase().replace(/[’‘]/g, "'").replace(/^[^a-z]+|[^a-z']+$/g, '')
 }
 
+/** 熟語(句動詞・慣用句など)の照合キーを作る。 */
+function normalizePhrase(phrase: string): string {
+  return phrase.toLowerCase().replace(/[’‘]/g, "'").replace(/\s+/g, ' ').trim()
+}
+
+/** 熟語として1つにまとめる品詞。汎用的なコロケーション(表現)は対象外。 */
+const PHRASE_PARTS_OF_SPEECH = new Set(['句動詞', '慣用句', '慣用表現', '接続表現', '連語'])
+
+/** 空白を含む見出し語を、熟語として引けるように索引化する。 */
+const phraseIndex = new Map<string, VocabularyEntry>()
+let maxPhraseWords = 1
+for (const entry of allVocabulary) {
+  if (!entry.word.includes(' ')) continue
+  if (!PHRASE_PARTS_OF_SPEECH.has(entry.partOfSpeech)) continue
+  const key = normalizePhrase(entry.word)
+  const parts = key.split(' ')
+  if (parts.length < 2) continue
+  if (parts.some((part) => !/^[a-z]+(?:['-][a-z]+)*$/.test(part))) continue
+  if (!phraseIndex.has(key)) phraseIndex.set(key, entry)
+  if (parts.length > maxPhraseWords) maxPhraseWords = parts.length
+}
+
+/** 例文中で1つの熟語としてまとめられる最大語数。 */
+const MAX_PHRASE_WORDS = maxPhraseWords
+
 function isDoubleConsonant(stem: string): boolean {
   return /([b-df-hj-np-tv-z])\1$/.test(stem)
 }
@@ -206,6 +231,57 @@ export function lookupWord(token: string): VocabularyEntry | undefined {
   for (const candidate of baseCandidates(word)) {
     const entry = wordIndex.get(candidate) ?? wordIndex.get(IRREGULAR_FORMS[candidate])
     if (entry) return entry
+  }
+
+  return undefined
+}
+
+/** 1語から、辞書照合用の原型候補(元の形も含む)を作る。 */
+function lemmaForms(word: string): string[] {
+  const out = [word]
+  const irregular = IRREGULAR_FORMS[word]
+  if (irregular) out.push(irregular)
+  for (const candidate of baseCandidates(word)) {
+    if (!out.includes(candidate)) out.push(candidate)
+  }
+  return out
+}
+
+export type PhraseMatch = {
+  entry: VocabularyEntry
+  /** 例文中で一致した語数 */
+  length: number
+}
+
+/**
+ * 例文中の連続する語を熟語に照合し、先頭から最長一致を優先して返す。
+ * words は句読点を挾まない、空白区切りの連続した語の配列。
+ * 先頭の語(多くは動詞)と末尾の語(多くは名詞)は活用形を原型に戻して照合する。
+ */
+export function lookupPhrase(words: readonly string[]): PhraseMatch | undefined {
+  if (words.length < 2) return undefined
+
+  const normalized = words.map(normalizeToken)
+  if (normalized.some((word) => !word)) return undefined
+
+  const max = Math.min(normalized.length, MAX_PHRASE_WORDS)
+  for (let length = max; length >= 2; length -= 1) {
+    const window = normalized.slice(0, length)
+    const direct = phraseIndex.get(window.join(' '))
+    if (direct) return { entry: direct, length }
+
+    const heads = lemmaForms(window[0])
+    const tails = lemmaForms(window[length - 1])
+    for (const head of heads) {
+      for (const tail of tails) {
+        const candidate =
+          length === 2
+            ? `${head} ${tail}`
+            : `${head} ${window.slice(1, -1).join(' ')} ${tail}`
+        const entry = phraseIndex.get(candidate)
+        if (entry) return { entry, length }
+      }
+    }
   }
 
   return undefined
